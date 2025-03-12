@@ -20,31 +20,31 @@ jobs:
 
       - name: Download Kernel Source
         run: |
-          wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.9.10.tar.xz
-          tar -xf linux-5.9.10.tar.xz
-          cd linux-5.9.10
+          wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.22.tar.xz
+          tar -xf linux.6.6.22.tar.xz
+          cd linux.6.6.22
 
       - name: Configure Kernel
         run: |
-          cd linux-5.9.10
+          cd linux.6.6.22
           cp /boot/config-$(uname -r) .config
           yes "" | make oldconfig
           make menuconfig
 
       - name: Compile Kernel
         run: |
-          cd linux-5.9.10
+          cd linux.6.6.22
           make -j$(nproc)
           sudo make modules_install
           sudo make install
 
       - name: Update GRUB
         run: |
-          sudo update-initramfs -c -k 5.9.10
+          sudo update-initramfs -c -k 6.6.22
           sudo update-grub
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: kernel-deb-packages
-          path: linux-5.9.10/debian/
+          path: linux-6.6.22/debian/
