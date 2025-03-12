@@ -27,9 +27,11 @@ jobs:
       - name: Configure Kernel
         run: |
           cd linux-6.6.22
-          cp /boot/config-$(uname -r) .config
-          yes "" | make oldconfig
-          make menuconfig
+          sudo make localmodconfig
+          sudo scripts/config --disable SYSTEM_TRUSTED_KEYS
+          sudo scripts/config --disable SYSTEM_REVOCATION_KEYS
+          sudo scripts/config --set-str CONFIG_SYSTEM_TRUSTED_KEYS ""
+          sudo scripts/config --set-str CONFIG_SYSTEM_REVOCATION_KEYS ""
 
       - name: Compile Kernel
         run: |
