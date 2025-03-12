@@ -17,6 +17,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libncurses5-dev libssl-dev libelf-dev build-essential \
             flex bison openssl bc zlib1g-dev git make gcc
+          sudo apt install fakeroot dwarves
 
       - name: Download Kernel Source
         run: |
@@ -36,17 +37,14 @@ jobs:
       - name: Compile Kernel
         run: |
           cd linux-6.6.22
-          make -j$(nproc)
+          sudo fakeroot make -j4
+          sudo echo $?
+
+      - name: Install Kernel
+        run: |
           sudo make modules_install
           sudo make install
 
-      - name: Update GRUB
+      - name: Check for correctness
         run: |
-          sudo update-initramfs -c -k 6.6.22
-          sudo update-grub
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: kernel-deb-packages
-          path: linux-6.6.22/debian/
+          uname -rs
