@@ -20,20 +20,20 @@ jobs:
 
       - name: Download Kernel Source
         run: |
-          wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.22.tar.xz
-          tar -xf linux.6.6.22.tar.xz
-          cd linux.6.6.22
+          sudo wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.22.tar.xz
+          tar -xf linux-6.6.22.tar.xz
+          cd linux-6.6.22
 
       - name: Configure Kernel
         run: |
-          cd linux.6.6.22
+          cd linux-6.6.22
           cp /boot/config-$(uname -r) .config
           yes "" | make oldconfig
           make menuconfig
 
       - name: Compile Kernel
         run: |
-          cd linux.6.6.22
+          cd linux-6.6.22
           make -j$(nproc)
           sudo make modules_install
           sudo make install
