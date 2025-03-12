@@ -42,6 +42,7 @@ jobs:
 
       - name: Install Kernel
         run: |
+          cd linux-6.6.22
           sudo make modules_install
           sudo make install
 
