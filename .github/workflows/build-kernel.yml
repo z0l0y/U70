@@ -46,7 +46,9 @@ jobs:
           sudo make modules_install
           sudo make install
 
-      - name: Check for correctness
+      - name: Check For Correctness
         run: |
-          sudo reboot
-          uname -rs
+          echo "Checking kernel build artifacts..."
+          ls -l linux-6.6.22/arch/x86/boot/bzImage
+          ls -l linux-6.6.22/System.map
+          ls -l linux-6.6.22/.config
