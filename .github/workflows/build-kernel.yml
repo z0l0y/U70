@@ -48,4 +48,5 @@ jobs:
 
       - name: Check for correctness
         run: |
+          sudo reboot
           uname -rs
